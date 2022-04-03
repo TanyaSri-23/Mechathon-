@@ -4,6 +4,7 @@ forces = []
 """This is a command line program of structural analysis"""
 
 def force_analysis(F):
+    """this function performs force analysis by static equilibrium condition"""
     H = []
     V = []
     for force in F:
@@ -11,8 +12,15 @@ def force_analysis(F):
         H.append(round(force[0]*cos(force[2]),2))
     return (round(sum(H),2), round(sum(V),2))
 
-def torque_analysis(mag, pos):
-    pass
+# def torque_analysis(F):
+#     """this function performs moment analysis by static equilibrium condition"""
+#     V = []
+#     for force in F:
+#         fsin = V.append(round(force[0]*sin(force[2]),2))
+#         distance = force[1][0]
+#     M = round(fsin * distance, 2)
+
+#     return M
 
 
 nf = int(input("Enter number of forces: "))
@@ -27,10 +35,16 @@ for i in range(0,nf):
     force.append(orientation)
     forces.append(force)
 
-
 for i in forces:
     data = pd.DataFrame([i[0],i[1],i[2]], ["magnitude", "coordinates", "orientation"])
 
 print(data)
-print(force_analysis(forces))
 
+
+Fh = force_analysis(forces)[0]
+Fv = force_analysis(forces)[1]
+
+balancing_force = round(sqrt(Fh**2 + Fv**2),2)
+direction = round((atan(Fv/Fh) * (180/pi)),2)
+
+print(f"The balancing force will be {balancing_force} at {direction} degree counter clockwise.")
